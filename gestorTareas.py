@@ -1,6 +1,6 @@
 import json
 import os
-import datetime
+from datetime import datetime, timedelta
 
 materias = {}
 
@@ -24,7 +24,8 @@ def menu():
     print("2. Agregar tarea o actividad")
     print("3. Ver actividades pendientes")
     print("4. Marcar actividad como completada")
-    print("5. Salir")
+    print("5. Tareas próximas a vencer")
+    print("6. Salir")
     opc = int(input("Selecciona una opción: "))
     os.system("cls")
     return opc
@@ -42,7 +43,7 @@ def registrarMateria(datos):
 #Validar formato de fecha de entrega
 def validarFecha(fecha):
     try:
-        datetime.datetime.strptime(fecha, "%d/%m/%Y") #DD/MM/YYYY
+        datetime.strptime(fecha, "%d/%m/%Y") #DD/MM/YYYY
         return True
     except ValueError:
         return False
@@ -90,6 +91,26 @@ def completarTarea(datos):
         print("La materia no existe")
     guardarDatos(datos)
 
+#Tareas próximas a vencer
+def taresProximas(datos):
+    hoy = datetime.now() #devuelve la fecha actual
+    limite = hoy + timedelta(days=3) #límite de 3 días adelante
+    
+    print("\nTareas próximas a vencer")
+    tareas_encontradas = False
+    for materia, tareas in datos.items(): #iteración por materia y por tarea
+        for tarea in tareas:
+            try:
+                fecha_tarea = datetime.strptime(tarea["fecha_entrega"], "%d/%m/%Y") #convierte la fecha a datetime porque se extra del JSON
+                if hoy <= fecha_tarea <= limite and not tarea["completada"]:
+                    print(f"- {tarea["descripcion"]} (Entrega: {tarea["fecha_entrega"]}) - Materia: {materia}")
+                    tareas_encontradas = True
+            except ValueError:
+                print(f"Formato de fecha inválido en la tarea '{tarea["descripcion"]}' de {materia}.")
+    
+    if not tareas_encontradas:
+        print("No hay tareas próximas a vencer")
+        
 #Main
 def main():
     datos = cargarDatos()
@@ -105,6 +126,8 @@ def main():
             case 4:
                 completarTarea(datos)
             case 5:
+                taresProximas(datos)
+            case 6:
                 guardarDatos(datos)
                 print("Saliendo...")
                 break
