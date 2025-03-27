@@ -26,7 +26,8 @@ def menu():
     print("4. Marcar actividad como completada")
     print("5. Tareas próximas a vencer")
     print("6. Mostrar estadísticas sobre las tareas")
-    print("7. Salir")
+    print("7. Búsqueda de tareas por palabras clave")
+    print("8. Salir")
     opc = int(input("Selecciona una opción: "))
     os.system("cls")
     return opc
@@ -119,16 +120,32 @@ def mostrarEstadistica(datos):
     total_completadas = 0
     
     for materia, tareas in datos.items():
-        completadas = sum(1 for tarea in tareas if tarea["completada"])
-        total_completadas += completadas
-        total_tareas += len(tareas)
+        completadas = sum(1 for tarea in tareas if tarea["completada"]) #suma las tareas si completada es True
+        total_completadas += completadas #contador de completadas por materia
+        total_tareas += len(tareas) #total de tareas por materia
         print(f"    - {materia}: {completadas} de {len(tareas)} tareas completadas")
     
     if total_tareas > 0:
-        porcentaje = round((total_completadas / total_tareas) * 100, 2)
+        porcentaje = round((total_completadas / total_tareas) * 100, 2) #redondear a dos decimales
         print(f"\nProgreso general: {porcentaje}% completado")
     else:
         print("No hay tareas registradas todavía")
+
+#Búsqueda de tareas
+def buscarTareas(datos):
+    clave = input("Ingresa la palabra clave para buscar: ").lower()
+    print("Resultados de la búsqueda")
+    tareas_encontradas = False #bandera
+    
+    for materia, tareas in datos.items():
+        for tarea in tareas:
+            if clave in tarea["descripcion"].lower(): #comparación en minúscula
+                estado = "Completada" if tarea["completada"] else "Pendiente"
+                print(f"    - {tarea['descripcion']} - Materia: {materia}- Fecha de entrega: {tarea['fecha_entrega']} - Estado: {estado}")
+                tareas_encontradas = True
+                
+    if not tareas_encontradas:
+        print("No se encontraron tareas relacionadas")
 
 #Main
 def main():
@@ -149,6 +166,8 @@ def main():
             case 6:
                 mostrarEstadistica(datos)
             case 7:
+                buscarTareas(datos)
+            case 8:
                 guardarDatos(datos)
                 print("Saliendo...")
                 break
