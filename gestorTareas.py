@@ -25,7 +25,8 @@ def menu():
     print("3. Ver actividades pendientes")
     print("4. Marcar actividad como completada")
     print("5. Tareas próximas a vencer")
-    print("6. Salir")
+    print("6. Mostrar estadísticas sobre las tareas")
+    print("7. Salir")
     opc = int(input("Selecciona una opción: "))
     os.system("cls")
     return opc
@@ -110,7 +111,25 @@ def taresProximas(datos):
     
     if not tareas_encontradas:
         print("No hay tareas próximas a vencer")
-        
+
+#Mostrar estadísticas sobre las tareas
+def mostrarEstadistica(datos):
+    print("\nEstadísticas del progreso")
+    total_tareas = 0
+    total_completadas = 0
+    
+    for materia, tareas in datos.items():
+        completadas = sum(1 for tarea in tareas if tarea["completada"])
+        total_completadas += completadas
+        total_tareas += len(tareas)
+        print(f"    - {materia}: {completadas} de {len(tareas)} tareas completadas")
+    
+    if total_tareas > 0:
+        porcentaje = round((total_completadas / total_tareas) * 100, 2)
+        print(f"\nProgreso general: {porcentaje}% completado")
+    else:
+        print("No hay tareas registradas todavía")
+
 #Main
 def main():
     datos = cargarDatos()
@@ -128,6 +147,8 @@ def main():
             case 5:
                 taresProximas(datos)
             case 6:
+                mostrarEstadistica(datos)
+            case 7:
                 guardarDatos(datos)
                 print("Saliendo...")
                 break
