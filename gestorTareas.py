@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime, timedelta
-from tkinter import simpledialog
+from tkinter import simpledialog, messagebox
 
 materias = {}
 ruta_archivo = "datos_tareas.json"
@@ -37,12 +37,14 @@ def menu():
 #Registrar una materia
 def registrarMateria(datos):
     materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
-    print(materia)
-    if materia not in datos:
-        datos[materia] = []
-        print(f"Materia '{materia}' registrada exitosamente")
+    if materia == None or materia == "":
+        messagebox.showwarning("Advertencia", "Ingresa un nombre para la materia")
     else:
-        print("La materia ya está registrada")
+        if materia not in datos:
+            datos[materia] = []
+            messagebox.showinfo("Materia registrada", f"¡{materia} se registró correctamente!")
+        else:
+            messagebox.showwarning("Materia registrada", f"¡{materia} ya está registrada!")
     guardarDatos(datos)
 
 #Validar formato de fecha de entrega
@@ -57,15 +59,15 @@ def validarFecha(fecha):
 def agregarTarea(datos):
     materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
-        descripcion = input("Descripción de la tarea: ")
-        fecha_entrega = input("Fecha de entrega (DD/MM/YYYY): ")
+        descripcion = simpledialog.askstring("Agregar tarea", "Descripción de la tarea:")
+        fecha_entrega = simpledialog.askstring("Agregar tarea", "Fecha de entrega (DD/MM/YYYY):")
         if validarFecha(fecha_entrega):
             datos[materia].append({"descripcion": descripcion, "fecha_entrega": fecha_entrega, "completada": False})
-            print("Tarea agregada exitosamente")
+            messagebox.showinfo("Agregar tarea", "¡La tarea se agregó correctamente!")
         else:
-            print("Fecha inválida, vuelva a intentarlo")
+            messagebox.showwarning("Advertencia", "Fecha inválida, vuelva a intentarlo")
     else:
-        print("La materia no existe. Por favor, regístrala primero")
+        messagebox.showwarning("Advertencia", "La materia no existe. Por favor, regístrala primero")
     guardarDatos(datos)
 
 #Ver tareas por materia
@@ -86,17 +88,17 @@ def completarTarea(datos):
     materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
         verTareas(datos, materia) #ver las tareas antes de marcar una tarea completada
-        indice = int(input("Número de la tarea a completar: ")) - 1
+        indice = simpledialog.askinteger("Marcar una tarea como completada", "Número de la tarea a completar:") - 1
         if 0 <= indice < len(datos[materia]): #validación para que el índice esté dentro del rango
             if datos[materia][indice]["completada"] == True:
-                print("La tarea ya había sido completada")
+                messagebox.showwarning("Advertencia", f"¡La tarea ya había sido completada!")
             else:
                 datos[materia][indice]["completada"] = True
-                print("Tarea marcada como completada")
+                messagebox.showinfo("Tarea completada", "Tarea marcada como completada")
         else:
-            print("Número de tarea inválido")
+            messagebox.showwarning("Advertencia", "Número de tarea inválido")
     else:
-        print("La materia no existe")
+        messagebox.showwarning("Advertencia", "La materia no existe")
     guardarDatos(datos)
 
 #Tareas próximas a vencer
@@ -117,7 +119,7 @@ def taresProximas(datos):
                 print(f"Formato de fecha inválido en la tarea '{tarea["descripcion"]}' de {materia}.")
     
     if not tareas_encontradas:
-        print("No hay tareas próximas a vencer")
+        messagebox.showinfo("Tareas próximas a vencer", "No hay tareas próximas a vencer")
 
 #Mostrar estadísticas sobre las tareas
 def mostrarEstadistica(datos):
@@ -139,7 +141,8 @@ def mostrarEstadistica(datos):
 
 #Búsqueda de tareas
 def buscarTareas(datos):
-    clave = input("Ingresa la palabra clave para buscar: ").lower()
+    clave = simpledialog.askstring("Búsqueda de tareas", "Ingrese la palabra clave para buscar:").lower()
+    #input("Ingresa la palabra clave para buscar: ").lower()
     print("Resultados de la búsqueda")
     tareas_encontradas = False #bandera
     
@@ -151,7 +154,7 @@ def buscarTareas(datos):
                 tareas_encontradas = True
                 
     if not tareas_encontradas:
-        print("No se encontraron tareas relacionadas")
+        messagebox.showwarning("Búsqueda de tareas", "No se encontraron tareas relacionadas")
 
 #Main
 def main():
