@@ -1,67 +1,9 @@
 {
     "Programacion I": [
         {
-            "descripcion": "TAREA",
-            "fecha_entrega": "23/12/2025",
-            "completada": true
-        },
-        {
             "descripcion": "PROYECTO",
-            "fecha_entrega": "30/06/2025",
-            "completada": false
-        },
-        {
-            "descripcion": "PARCIAL",
-            "fecha_entrega": "10/04/2025",
-            "completada": false
-        },
-        {
-            "descripcion": "PRUEBA",
-            "fecha_entrega": "25/09/2025",
-            "completada": false
-        }
-    ],
-    "Matematica I": [
-        {
-            "descripcion": "GUIA",
-            "fecha_entrega": "23/12/2025",
-            "completada": true
-        },
-        {
-            "descripcion": "PRUEBA2",
-            "fecha_entrega": "23/10/2025",
-            "completada": false
-        },
-        {
-            "descripcion": "PRUEBA1",
-            "fecha_entrega": "27/03/2025",
-            "completada": false
-        }
-    ],
-    "Fisica I": [
-        {
-            "descripcion": "LABORATORIO",
-            "fecha_entrega": "25/04/2025",
-            "completada": false
-        },
-        {
-            "descripcion": "PRUEBA",
-            "fecha_entrega": "26/03/2025",
-            "completada": false
-        },
-        {
-            "descripcion": "PRUEBA2",
             "fecha_entrega": "29/03/2025",
-            "completada": false
+            "completada": true
         }
-    ],
-    "Sistemas Operativos": [
-        {
-            "descripcion": "ENSAYO",
-            "fecha_entrega": "28/03/2025",
-            "completada": false
-        }
-    ],
-    "Etica": [],
-    "Programacion II": []
+    ]
 }

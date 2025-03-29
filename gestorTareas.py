@@ -1,20 +1,22 @@
 import json
 import os
 from datetime import datetime, timedelta
+from tkinter import simpledialog
 
 materias = {}
+ruta_archivo = "datos_tareas.json"
 
 #Cargar datos desde el archivo
 def cargarDatos():
     try:
-        with open("datos_tareas.json", "r") as archivo:
+        with open(ruta_archivo, "r") as archivo:
             return json.load(archivo)
     except FileNotFoundError:
         return {} #devuelve diccionario vacío
 
 #Guardar los datos en el archivo         
 def guardarDatos(datos):
-    with open("datos_tareas.json", "w") as archivo:
+    with open(ruta_archivo, "w") as archivo:
         json.dump(datos, archivo, indent=4) #identación de 4 espacios
 
 #Menu
@@ -31,10 +33,11 @@ def menu():
     opc = int(input("Selecciona una opción: "))
     os.system("cls")
     return opc
-
+ 
 #Registrar una materia
 def registrarMateria(datos):
-    materia = input("Ingrese la materia: ")
+    materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
+    print(materia)
     if materia not in datos:
         datos[materia] = []
         print(f"Materia '{materia}' registrada exitosamente")
@@ -52,7 +55,7 @@ def validarFecha(fecha):
 
 #Agregar una tarea  
 def agregarTarea(datos):
-    materia = input("Ingrese la materia: ")
+    materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
         descripcion = input("Descripción de la tarea: ")
         fecha_entrega = input("Fecha de entrega (DD/MM/YYYY): ")
@@ -68,7 +71,7 @@ def agregarTarea(datos):
 #Ver tareas por materia
 def verTareas(datos, materia=None): #inicializada en None porque el argumento es opcional
     if materia is None:
-        materia = input("Ingrese la materia: ")
+        materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
         print(f"\nTareas de {materia}")
         for i, tarea in enumerate(datos[materia]): #enumera automáticamente cada iteración
@@ -80,13 +83,16 @@ def verTareas(datos, materia=None): #inicializada en None porque el argumento es
 
 #Marcar una tarea como completada
 def completarTarea(datos):
-    materia = input("Ingrese la materia: ")
+    materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
         verTareas(datos, materia) #ver las tareas antes de marcar una tarea completada
         indice = int(input("Número de la tarea a completar: ")) - 1
         if 0 <= indice < len(datos[materia]): #validación para que el índice esté dentro del rango
-            datos[materia][indice]["completada"] = True
-            print("Tarea marcada como completada")
+            if datos[materia][indice]["completada"] == True:
+                print("La tarea ya había sido completada")
+            else:
+                datos[materia][indice]["completada"] = True
+                print("Tarea marcada como completada")
         else:
             print("Número de tarea inválido")
     else:
