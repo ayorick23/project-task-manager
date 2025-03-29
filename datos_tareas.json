@@ -17,5 +17,12 @@
     ],
     "hola": [],
     "null": [],
-    "": []
+    "": [],
+    "Etica": [
+        {
+            "descripcion": "Ensayo",
+            "fecha_entrega": "30/03/2025",
+            "completada": true
+        }
+    ]
 }

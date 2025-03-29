@@ -90,8 +90,8 @@ def completarTarea(datos):
         verTareas(datos, materia) #ver las tareas antes de marcar una tarea completada
         indice = simpledialog.askinteger("Marcar una tarea como completada", "Número de la tarea a completar:") - 1
         if 0 <= indice < len(datos[materia]): #validación para que el índice esté dentro del rango
-            if datos[materia][indice]["completada"] == True:
-                messagebox.showwarning("Advertencia", f"¡La tarea ya había sido completada!")
+            if datos[materia][indice]["completada"]: #si "completada" en esa tarea de esa materia es True
+                messagebox.showwarning("Advertencia", "¡La tarea ya había sido completada!")
             else:
                 datos[materia][indice]["completada"] = True
                 messagebox.showinfo("Tarea completada", "Tarea marcada como completada")
@@ -155,34 +155,5 @@ def buscarTareas(datos):
                 
     if not tareas_encontradas:
         messagebox.showwarning("Búsqueda de tareas", "No se encontraron tareas relacionadas")
-
-#Main
-def main():
-    datos = cargarDatos()
-    while True:
-        opc = menu()
-        match opc:
-            case 1:
-                registrarMateria(datos)
-            case 2:
-                agregarTarea(datos)
-            case 3:
-                verTareas(datos)
-            case 4:
-                completarTarea(datos)
-            case 5:
-                taresProximas(datos)
-            case 6:
-                mostrarEstadistica(datos)
-            case 7:
-                buscarTareas(datos)
-            case 8:
-                guardarDatos(datos)
-                print("Saliendo...")
-                break
-            case _:
-                print("Opción inválida. Intenta de nuevo")
-
-#Ejecución del Main
-if __name__ == "__main__":
-    main()
+        
+#Agregar la función de editar y de eliminar tareas y materias
