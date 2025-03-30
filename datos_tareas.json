@@ -13,6 +13,11 @@
             "descripcion": "Trabajo grupal",
             "fecha_entrega": "31/03/2025",
             "completada": true
+        },
+        {
+            "descripcion": "Ensayo 2",
+            "fecha_entrega": "29/03/2025",
+            "completada": true
         }
     ],
     "hola": [],
@@ -24,5 +29,6 @@
             "fecha_entrega": "30/03/2025",
             "completada": true
         }
-    ]
+    ],
+    "Programacion II": []
 }
