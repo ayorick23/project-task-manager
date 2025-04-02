@@ -1,7 +1,9 @@
 import json
 import os
 from datetime import datetime, timedelta
-from tkinter import simpledialog, messagebox
+import tkinter as tk
+from tkinter import simpledialog, messagebox, ttk
+#from views.main_window import *
 
 materias = {}
 ruta_archivo = "datos_tareas.json"
@@ -71,16 +73,31 @@ def agregarTarea(datos):
     guardarDatos(datos)
 
 #Ver tareas por materia
-def verTareas(datos, materia=None): #inicializada en None porque el argumento es opcional
+def verTareas(datos, materia=None, pantallaPrincipal=None): #inicializada en None porque el argumento es opcional
     if materia is None:
         materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
-        print(f"\nTareas de {materia}")
-        for i, tarea in enumerate(datos[materia]): #enumera automáticamente cada iteración
+        if pantallaPrincipal is None:
+            pantallaPrincipal = tk.Tk()  #crea una nueva instancia de Tk si no se proporciona
+            pantallaPrincipal.withdraw()  #esconde la pantalla principal
+        
+        ventana_tareas = tk.Toplevel(pantallaPrincipal)
+        ventana_tareas.title("Tareas Registradas")
+        ventana_tareas.geometry("900x300")
+        
+        tree = ttk.Treeview(ventana_tareas, columns=("Materia", "Descripción", "Fecha de Entrega", "Estado"), show="headings")
+        tree.heading("Materia", text="Materia")
+        tree.heading("Descripción", text="Descripción")
+        tree.heading("Fecha de Entrega", text="Fecha")
+        tree.heading("Estado", text="Estado")
+        
+        for tarea in datos[materia]:
             estado = "Completada" if tarea["completada"] else "Pendiente"
-            print(f"   {i + 1}. {tarea['descripcion']} - Fecha de entrega: {tarea['fecha_entrega']} - Estado: {estado}")
+            tree.insert("", tk.END, values=(materia, tarea["descripcion"], tarea["fecha_entrega"], estado))
+            
+        tree.pack(expand=True, fill="both")
     else:
-        print("La materia no existe. Por favor, regístrala primero")
+        messagebox.showwarning("Advertencia", "La materia no existe. Por favor, regístrala primero")
     guardarDatos(datos)
 
 #Marcar una tarea como completada
