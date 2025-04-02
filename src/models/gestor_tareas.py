@@ -92,7 +92,7 @@ def verTareas(datos, materia=None, pantallaPrincipal=None): #inicializada en Non
         tree.heading("Fecha de Entrega", text="Fecha")
         tree.heading("Estado", text="Estado")
         
-        for i, tarea in datos[materia]:
+        for i, tarea in enumerate(datos[materia]):
             estado = "Completada" if tarea["completada"] else "Pendiente"
             tree.insert("", tk.END, values=(i+1, materia, tarea["descripcion"], tarea["fecha_entrega"], estado))
             

@@ -3,7 +3,7 @@
         {
             "descripcion": "Proyecto 1",
             "fecha_entrega": "2/4/2025",
-            "completada": false
+            "completada": true
         }
     ]
 }
