@@ -85,15 +85,16 @@ def verTareas(datos, materia=None, pantallaPrincipal=None): #inicializada en Non
         ventana_tareas.title("Tareas Registradas")
         ventana_tareas.geometry("900x300")
         
-        tree = ttk.Treeview(ventana_tareas, columns=("Materia", "Descripción", "Fecha de Entrega", "Estado"), show="headings")
+        tree = ttk.Treeview(ventana_tareas, columns=("#", "Materia", "Descripción", "Fecha de Entrega", "Estado"), show="headings")
+        tree.heading("#", text="#")
         tree.heading("Materia", text="Materia")
         tree.heading("Descripción", text="Descripción")
         tree.heading("Fecha de Entrega", text="Fecha")
         tree.heading("Estado", text="Estado")
         
-        for tarea in datos[materia]:
+        for i, tarea in datos[materia]:
             estado = "Completada" if tarea["completada"] else "Pendiente"
-            tree.insert("", tk.END, values=(materia, tarea["descripcion"], tarea["fecha_entrega"], estado))
+            tree.insert("", tk.END, values=(i+1, materia, tarea["descripcion"], tarea["fecha_entrega"], estado))
             
         tree.pack(expand=True, fill="both")
     else:
