@@ -4,8 +4,26 @@
             "descripcion": "Proyecto 1",
             "fecha_entrega": "2/4/2025",
             "completada": true
+        },
+        {
+            "descripcion": "Tarea",
+            "fecha_entrega": "05/04/2025",
+            "completada": true
+        },
+        {
+            "descripcion": "Prueba",
+            "fecha_entrega": "06/04/2025",
+            "completada": true
         }
     ],
-    "Programacion I": [],
-    "Programacion II": []
+    "Programacion I": [
+        {
+            "descripcion": "Proyecto I",
+            "fecha_entrega": "30/04/2025",
+            "completada": true
+        }
+    ],
+    "Programacion II": [],
+    "Sistemas Operativos": [],
+    "Fisica I": []
 }

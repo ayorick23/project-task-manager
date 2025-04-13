@@ -3,7 +3,6 @@ import os
 from datetime import datetime, timedelta
 import tkinter as tk
 from tkinter import simpledialog, messagebox, ttk
-#from views.main_window import *
 
 materias = {}
 ruta_archivo = "datos_tareas.json"
@@ -21,21 +20,6 @@ def guardarDatos(datos):
     with open(ruta_archivo, "w") as archivo:
         json.dump(datos, archivo, indent=4) #identación de 4 espacios
 
-#Menu
-def menu():
-    print("\n---------MENÚ PRINCIPAL---------")
-    print("1. Registrar materia")
-    print("2. Agregar tarea o actividad")
-    print("3. Ver actividades pendientes")
-    print("4. Marcar actividad como completada")
-    print("5. Tareas próximas a vencer")
-    print("6. Mostrar estadísticas sobre las tareas")
-    print("7. Búsqueda de tareas por palabras clave")
-    print("8. Salir")
-    opc = int(input("Selecciona una opción: "))
-    os.system("cls")
-    return opc
- 
 #Registrar una materia
 def registrarMateria(datos):
     materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
@@ -74,29 +58,12 @@ def agregarTarea(datos):
 
 #Ver tareas por materia
 def verTareas(datos, materia=None, pantallaPrincipal=None): #inicializada en None porque el argumento es opcional
+    #se importa adentro de la función para evitar problemas de importación circular
+    from views.tareas_pendientes import mostrar_tareas #importar la función mostrar_tareas desde el módulo tareas_pendientes
     if materia is None:
         materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
     if materia in datos:
-        if pantallaPrincipal is None:
-            pantallaPrincipal = tk.Tk()  #crea una nueva instancia de Tk si no se proporciona
-            pantallaPrincipal.withdraw()  #esconde la pantalla principal
-        
-        ventana_tareas = tk.Toplevel(pantallaPrincipal)
-        ventana_tareas.title("Tareas Registradas")
-        ventana_tareas.geometry("900x300")
-        
-        tree = ttk.Treeview(ventana_tareas, columns=("#", "Materia", "Descripción", "Fecha de Entrega", "Estado"), show="headings")
-        tree.heading("#", text="#")
-        tree.heading("Materia", text="Materia")
-        tree.heading("Descripción", text="Descripción")
-        tree.heading("Fecha de Entrega", text="Fecha")
-        tree.heading("Estado", text="Estado")
-        
-        for i, tarea in enumerate(datos[materia]):
-            estado = "Completada" if tarea["completada"] else "Pendiente"
-            tree.insert("", tk.END, values=(i+1, materia, tarea["descripcion"], tarea["fecha_entrega"], estado))
-            
-        tree.pack(expand=True, fill="both")
+        mostrar_tareas(datos, materia, pantallaPrincipal) #llama a la función mostrar_tareas para mostrar las tareas de la materia
     else:
         messagebox.showwarning("Advertencia", "La materia no existe. Por favor, regístrala primero")
     guardarDatos(datos)

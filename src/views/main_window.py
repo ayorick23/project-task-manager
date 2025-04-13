@@ -123,4 +123,7 @@ def pantallaPrincipal():
     )
     botonSalir.pack(pady=5)
 
+    #Muestra la ventana constantemente
     ventana.mainloop()
+    
+    return ventana
