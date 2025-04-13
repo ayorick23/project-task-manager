@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
+import customtkinter as ctk
 import sys
 import os
 from pathlib import Path
@@ -14,7 +15,7 @@ def cargar_datos(): #se mete en una funciÃ³n para evitar problemas de importaciÃ
     return datos
 
 def mostrar_tareas(datos, materia, pantallaPrincipal):
-    ventana_tareas = tk.Toplevel(pantallaPrincipal) #crea una ventana secundaria
+    ventana_tareas = ctk.CTkToplevel(pantallaPrincipal) #crea una ventana secundaria
     ventana_tareas.title("Tareas Registradas")
     ventana_tareas.geometry("950x300")
 

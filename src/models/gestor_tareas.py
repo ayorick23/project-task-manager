@@ -2,7 +2,9 @@ import json
 import os
 from datetime import datetime, timedelta
 import tkinter as tk
+import customtkinter as ctk
 from tkinter import simpledialog, messagebox, ttk
+from views.messageboxes import showinfo, showwarning
 
 materias = {}
 ruta_archivo = "datos_tareas.json"
@@ -22,15 +24,15 @@ def guardarDatos(datos):
 
 #Registrar una materia
 def registrarMateria(datos):
-    materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
+    materia = ctk.CTkInputDialog(title="Registrar Materia", text="Ingrese el nombre de la materia:").get_input()
     if materia == None or materia == "":
-        messagebox.showwarning("Advertencia", "Ingresa un nombre para la materia")
+        showwarning("Advertencia", "Ingresa un nombre para la materia")
     else:
         if materia not in datos:
             datos[materia] = []
-            messagebox.showinfo("Materia registrada", f"¡{materia} se registró correctamente!")
+            showinfo("Materia registrada", f"¡{materia} se registró correctamente!")
         else:
-            messagebox.showwarning("Materia registrada", f"¡{materia} ya está registrada!")
+            showwarning("Materia registrada", f"¡{materia} ya está registrada!")
     guardarDatos(datos)
 
 #Validar formato de fecha de entrega
@@ -43,17 +45,17 @@ def validarFecha(fecha):
 
 #Agregar una tarea  
 def agregarTarea(datos):
-    materia = simpledialog.askstring("Registrar Materia", "Ingrese el nombre de la materia:")
+    materia = ctk.CTkInputDialog(title="Registrar Materia", text="Ingrese el nombre de la materia:").get_input() #se usa CTkInputDialog para que se vea más bonito
     if materia in datos:
         descripcion = simpledialog.askstring("Agregar tarea", "Descripción de la tarea:")
         fecha_entrega = simpledialog.askstring("Agregar tarea", "Fecha de entrega (DD/MM/YYYY):")
         if validarFecha(fecha_entrega):
             datos[materia].append({"descripcion": descripcion, "fecha_entrega": fecha_entrega, "completada": False})
-            messagebox.showinfo("Agregar tarea", "¡La tarea se agregó correctamente!")
+            showinfo("Agregar tarea", "¡La tarea se agregó correctamente!")
         else:
-            messagebox.showwarning("Advertencia", "Fecha inválida, vuelva a intentarlo")
+            showwarning("Advertencia", "Fecha inválida, vuelva a intentarlo")
     else:
-        messagebox.showwarning("Advertencia", "La materia no existe. Por favor, regístrala primero")
+        showwarning("Advertencia", "La materia no existe. Por favor, regístrala primero")
     guardarDatos(datos)
 
 #Ver tareas por materia
@@ -76,14 +78,14 @@ def completarTarea(datos):
         indice = simpledialog.askinteger("Marcar una tarea como completada", "Número de la tarea a completar:") - 1
         if 0 <= indice < len(datos[materia]): #validación para que el índice esté dentro del rango
             if datos[materia][indice]["completada"]: #si "completada" en esa tarea de esa materia es True
-                messagebox.showwarning("Advertencia", "¡La tarea ya había sido completada!")
+                showwarning("Advertencia", "¡La tarea ya había sido completada!")
             else:
                 datos[materia][indice]["completada"] = True
-                messagebox.showinfo("Tarea completada", "Tarea marcada como completada")
+                showinfo("Tarea completada", "Tarea marcada como completada")
         else:
-            messagebox.showwarning("Advertencia", "Número de tarea inválido")
+            showwarning("Advertencia", "Número de tarea inválido")
     else:
-        messagebox.showwarning("Advertencia", "La materia no existe")
+        showwarning("Advertencia", "La materia no existe")
     guardarDatos(datos)
 
 #Tareas próximas a vencer
@@ -104,7 +106,7 @@ def taresProximas(datos):
                 print(f"Formato de fecha inválido en la tarea '{tarea["descripcion"]}' de {materia}.")
     
     if not tareas_encontradas:
-        messagebox.showinfo("Tareas próximas a vencer", "No hay tareas próximas a vencer")
+        showinfo("Tareas próximas a vencer", "No hay tareas próximas a vencer")
 
 #Mostrar estadísticas sobre las tareas
 def mostrarEstadistica(datos):
@@ -127,7 +129,6 @@ def mostrarEstadistica(datos):
 #Búsqueda de tareas
 def buscarTareas(datos):
     clave = simpledialog.askstring("Búsqueda de tareas", "Ingrese la palabra clave para buscar:").lower()
-    #input("Ingresa la palabra clave para buscar: ").lower()
     print("Resultados de la búsqueda")
     tareas_encontradas = False #bandera
     
@@ -139,6 +140,6 @@ def buscarTareas(datos):
                 tareas_encontradas = True
                 
     if not tareas_encontradas:
-        messagebox.showwarning("Búsqueda de tareas", "No se encontraron tareas relacionadas")
+        showwarning("Búsqueda de tareas", "No se encontraron tareas relacionadas")
         
 #Agregar la función de editar y de eliminar tareas y materias
