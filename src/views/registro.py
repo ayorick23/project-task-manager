@@ -2,44 +2,27 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image
+import subprocess
+import os
 
 #Configuración inicial
 ctk.set_appearance_mode("light")
 #ctk.set_default_color_theme("blue")
 
+#Centra la ventana en la pantalla principal
 def CenterWindowToDisplay(Screen: ctk, width: int, height: int, scale_factor: float = 1.0):
-    """Centers the window to the main display/monitor"""
     screen_width = Screen.winfo_screenwidth()
     screen_height = Screen.winfo_screenheight()
     x = int((screen_width/2) - (width/2))
     y = int((screen_height/2) - (height/1.5))
     return f"{width}x{height}+{x}+{y}"
 
-def switch_window(current_window, target_window_class):
-    """
-    Cierra la ventana actual y abre la ventana destino.
-    
-    Parámetros:
-    - current_window: La ventana actual que será destruida
-    - target_window_class: La clase de la ventana a la que se quiere navegar
-    """
-    # Guardar la posición de la ventana actual
-    x = current_window.winfo_x()
-    y = current_window.winfo_y()
-    
-    # Destruir la ventana actual
-    current_window.destroy()
-    
-    # Crear y mostrar la nueva ventana
-    new_window = target_window_class()
-    
-    # Posicionar la nueva ventana en la misma ubicación que la anterior
-    new_window.geometry(f"+{x}+{y}")
-    
-    return new_window
-
+#Abre la ventana de inicio de sesión y cierra la ventana de registro
+def abrir_login():
+    subprocess.Popen(["python", "src/views/log_in.py"])
+    os._exit(0) # cierra la ventana de registro
+ 
 def ventana_registro():
-    from log_in import ventana_log_in
     #Ventana principal
     registro = ctk.CTk()
     registro.title("Registro")
@@ -127,7 +110,7 @@ def ventana_registro():
     label_login.grid(row=12, column=0, pady=(10, 0), padx=(160, 0))
     link_login = ctk.CTkLabel(form_frame, text="Iniciar sesión", font=("Roboto", 12, "bold"), text_color="#0033FF", cursor="hand2")
     link_login.bind("<Button-1>", lambda e: link_login.configure(text_color="#6C0000"))
-    link_login.bind("<Button-1>", lambda e: switch_window(ventana_registro, ventana_log_in))
+    link_login.bind("<Button-1>", lambda e: abrir_login())
     link_login.grid(row=12, column=1, pady=(10, 0), padx=(0, 160))
 
     registro.mainloop()

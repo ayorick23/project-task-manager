@@ -22,4 +22,5 @@ Button1.place(x=120, y=57)
 #pywinstyles.set_opacity(Button1, color="#000001") # just add this line
 #pywinstyles.set_opacity(Button1, value=0.5, color="#000001") # color is not necessary in all cases
 pywinstyles.set_opacity(Button1, value=0.5, color="white")
+
 app.mainloop()

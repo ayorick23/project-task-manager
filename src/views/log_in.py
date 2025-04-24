@@ -2,6 +2,8 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image
+import subprocess
+import os
 
 #Configuración inicial
 ctk.set_appearance_mode("light")
@@ -15,31 +17,12 @@ def CenterWindowToDisplay(Screen: ctk, width: int, height: int, scale_factor: fl
     y = int((screen_height/2) - (height/1.5))
     return f"{width}x{height}+{x}+{y}"
 
-def switch_window(current_window, target_window_class):
-    """
-    Cierra la ventana actual y abre la ventana destino.
-    
-    Parámetros:
-    - current_window: La ventana actual que será destruida
-    - target_window_class: La clase de la ventana a la que se quiere navegar
-    """
-    # Guardar la posición de la ventana actual
-    x = current_window.winfo_x()
-    y = current_window.winfo_y()
-    
-    # Destruir la ventana actual
-    current_window.destroy()
-    
-    # Crear y mostrar la nueva ventana
-    new_window = target_window_class()
-    
-    # Posicionar la nueva ventana en la misma ubicación que la anterior
-    new_window.geometry(f"+{x}+{y}")
-    
-    return new_window
+#Abre la ventana de registro y cierra la ventana de inicio de sesión
+def abrir_registro():
+    subprocess.Popen(["python", "src/views/registro.py"])
+    os._exit(0) #cierra la ventana de login
 
 def ventana_log_in():
-    from registro import ventana_registro
     #Ventana principal
     log_in = ctk.CTk()
     log_in.title("Ingresar")
@@ -126,7 +109,7 @@ def ventana_log_in():
     label_register.grid(row=11, column=0, pady=(10, 0), padx=(145, 0))
     link_register = ctk.CTkLabel(form_frame, text="Regístrate", font=("Roboto", 12, "bold"), text_color="#0033FF", cursor="hand2")
     link_register.bind("<Button-1>", lambda e: link_register.configure(text_color="#6C0000"))
-    link_register.bind("<Button-1>", lambda e: switch_window(ventana_log_in, ventana_registro))
+    link_register.bind("<Button-1>", lambda e: abrir_registro())
     link_register.grid(row=11, column=1, pady=(10, 0), padx=(0, 145))
 
     log_in.mainloop()

@@ -11,7 +11,8 @@ class App(ctk.CTk):
 
         self.title("UEESential")
         self.geometry("1080x720")
-        self.resizable(False, False)
+        self.after(0, lambda: self.state('zoomed'))
+        #self.resizable(False, False)
 
         # Layout: 3 columnas principales
         self.grid_columnconfigure(0, weight=1)  # Menú lateral
