@@ -69,18 +69,18 @@ def ventana_log_in():
 
     entry_password = ctk.CTkEntry(form_frame, placeholder_text="*********", show="*", width=300, height=30)
     entry_password.configure(border_color="#B3B3B3", border_width=1, corner_radius=8)
-    entry_password.grid(row=4, column=0, columnspan=2, pady=(0, 10), padx=100)
+    entry_password.grid(row=4, column=0, columnspan=2, pady=(0, 5), padx=100)
     """
     #Recordarme
     remember = ctk.CTkCheckBox(form_frame, text="Recordarme", font=("Roboto", 12), text_color=("#2F2F77", "white"), hover_color="#0033FF", border_color="#B3B3B3")
     remember.configure(border_width=1, corner_radius=100, cursor="hand2")
     remember.grid(row=5, column=0, pady=(10, 0), padx=(100, 0), sticky="w")
-
+    """
     #Olvidé mi contraseña
     forgot_password = ctk.CTkLabel(form_frame, text="¿Olvidaste tu contraseña?", font=("Roboto", 12), text_color="#0033FF", cursor="hand2")
     forgot_password.bind("<Button-1>", lambda e: forgot_password.configure(text_color="#6C0000"))
-    forgot_password.grid(row=5, column=1, pady=(10, 0), padx=(0, 100), sticky="e")
-    """
+    forgot_password.grid(row=5, column=0, columnspan=2, pady=(0, 10), padx= 100, sticky="e")
+
     #Botón de registrar
     log_in_btn = ctk.CTkButton(form_frame, text="Ingresar")
     log_in_btn.configure(font=("Roboto", 14, "bold"), fg_color="#F6DC00", hover_color="#0033FF", text_color="#2F2F77", corner_radius=8, cursor="hand2")
@@ -106,11 +106,11 @@ def ventana_log_in():
 
     #Cambiar a iniciar sesión
     label_register = ctk.CTkLabel(form_frame, text="¿Todavía no tienes cuenta?", font=("Roboto", 12), text_color=("#2F2F77", "white"))
-    label_register.grid(row=11, column=0, pady=(10, 0), padx=(145, 0))
+    label_register.grid(row=11, column=0, pady=(50, 0), padx=(145, 0))
     link_register = ctk.CTkLabel(form_frame, text="Regístrate", font=("Roboto", 12, "bold"), text_color="#0033FF", cursor="hand2")
     link_register.bind("<Button-1>", lambda e: link_register.configure(text_color="#6C0000"))
     link_register.bind("<Button-1>", lambda e: abrir_registro())
-    link_register.grid(row=11, column=1, pady=(10, 0), padx=(0, 145))
+    link_register.grid(row=11, column=1, pady=(50, 0), padx=(0, 145))
 
     log_in.mainloop()
     

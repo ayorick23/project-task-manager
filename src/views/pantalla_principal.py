@@ -26,7 +26,7 @@ class App(ctk.CTk):
 
     def create_sidebar(self):
         sidebar = ctk.CTkFrame(self, width=200, corner_radius=0, fg_color="#F7F7F9")
-        sidebar.grid(row=0, column=0, sticky="nsew")
+        sidebar.grid(row=0, column=0, rowspan=10, sticky="nsew")
         
         logo_image_path = "src/assets/UEES_logo.png"
         self.logo_image = ctk.CTkImage(light_image=Image.open(logo_image_path),
