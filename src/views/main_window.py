@@ -4,6 +4,9 @@ import datetime
 from models.task_manager import *
 from views.editor import MarkdownEditor
 from views.pensum import PensumWindow
+from PIL import ImageDraw
+from views.widgets import WeekWidget
+import textwrap
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -76,14 +79,67 @@ class MainWindow(ctk.CTk):
         self.content_frame = ctk.CTkFrame(self, fg_color="#f5f6fa", corner_radius=0)
         self.content_frame.grid(row=0, column=1, sticky="nsew")
         self.content_frame.grid_propagate(True)
-
+        
+        self.selected_index = None
+        self.select_option(0)
+        
         # Lateral derecho
         self.right_frame = ctk.CTkFrame(self, width=340, fg_color="white", corner_radius=0)
         self.right_frame.grid(row=0, column=2, sticky="nsew")
         self.right_frame.grid_propagate(False)
         
-        self.selected_index = None
-        self.select_option(0)
+        # Título "Perfil" en la parte superior izquierda del right_frame
+        perfil_label = ctk.CTkLabel(
+            self.right_frame,
+            text="Perfil",
+            font=ctk.CTkFont(size=24, weight="bold"),
+            text_color="#222",
+            fg_color="white",
+            anchor="w",
+            justify="left"
+        )
+        perfil_label.pack(anchor="nw", padx=30, pady=(30, 0))
+        
+        # Foto de perfil circular
+        profile_img = Image.open("src/assets/profile.jpg").resize((120, 120))
+        mask = Image.new("L", (120, 120), 0)
+        draw = Image.new("RGBA", (120, 120))
+        mask_draw = Image.new("L", (120, 120), 0)
+        ImageDraw.Draw(mask_draw).ellipse((0, 0, 120, 120), fill=255)
+        profile_img.putalpha(mask_draw)
+        profile_ctk_img = ctk.CTkImage(light_image=profile_img, size=(120, 120))
+        profile_label = ctk.CTkLabel(self.right_frame, image=profile_ctk_img, text="", fg_color="white")
+        profile_label.image = profile_ctk_img
+        profile_label.pack(pady=(20, 20))
+
+        # Nombre del usuario
+        user_name_label = ctk.CTkLabel(
+            self.right_frame,
+            text="Dereck Mendez",
+            font=ctk.CTkFont(size=32, weight="bold"),
+            text_color="#222",
+            fg_color="white"
+        )
+        user_name_label.pack(pady=(0, 20))
+        
+        # Ajustar el texto de la carrera para que tenga saltos de línea si es muy largo
+        career_text = "Futuro Ingenierio en Desarrollo de Software y Ciencia de Datos"
+        # Puedes ajustar el ancho máximo de caracteres por línea según tu preferencia
+        wrapped_career = "\n".join(textwrap.wrap(career_text, width=32))
+        
+        # Carrera universitaria
+        user_career_label = ctk.CTkLabel(
+            self.right_frame,
+            text=wrapped_career,
+            font=ctk.CTkFont(size=20),
+            text_color="#555",
+            fg_color="white"
+        )
+        user_career_label.pack(pady=(0, 30))
+
+        # Espacio para el widget de calendario
+        calendar_widget = WeekWidget(self.right_frame)
+        calendar_widget.pack(pady=20, padx=20, fill="x")
 
     def select_option(self, index):
         # Cambia el color del botón seleccionado
