@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import datetime
 from models.task_manager import *
 from views.editor import MarkdownEditor
+from views.pensum import PensumWindow
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -184,7 +185,8 @@ class MainWindow(ctk.CTk):
             print("Actividades")
         # PENSUM
         if index == 4:
-            print("Pensum")
+            pensum = PensumWindow(self.content_frame)
+            pensum.pack(fill="both", expand=True)
         # ESTADISTICAS
         if index == 5:
             print("Estadísticas")
