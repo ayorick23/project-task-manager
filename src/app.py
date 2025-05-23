@@ -7,4 +7,5 @@ from views.main_window import *
 sys.path.append(os.path.abspath(os.path.dirname(__file__))) 
 
 if __name__ == "__main__":
-    pantallaPrincipal()
+    app = MainWindow()
+    app.mainloop()

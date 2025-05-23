@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk
 import datetime
+from models.task_manager import *
+from views.editor import MarkdownEditor
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -90,10 +92,12 @@ class MainWindow(ctk.CTk):
             else:
                 btn.configure(fg_color="white")
         self.selected_index = index
+        
         # Cambia el contenido principal según la opción
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
+        # INICIO
         if index == 0:
             # Obtener la hora actual
             now = datetime.datetime.now().hour
@@ -168,7 +172,27 @@ class MainWindow(ctk.CTk):
                 col = i % 3
                 btn.grid(row=row, column=col, padx=(5, 10), pady=10, sticky="nsew")
                 materias_frame.grid_columnconfigure(col, weight=1)
+        # MATERIAS
+        if index == 1:
+            print("Materias")
+        # NOTAS DE CLASES
+        if index == 2:
+            editor = MarkdownEditor(self.content_frame)
+            editor.pack(fill="both", expand=True)
+        # ACTIVIDADES
+        if index == 3:
+            print("Actividades")
+        # PENSUM
+        if index == 4:
+            print("Pensum")
+        # ESTADISTICAS
+        if index == 5:
+            print("Estadísticas")
+        # RECORDATORIOS
+        if index == 6:
+            print("Recordatorios")
         else:
+            """
             # Vista por defecto para otras opciones
             label = ctk.CTkLabel(
             self.content_frame,
@@ -177,7 +201,5 @@ class MainWindow(ctk.CTk):
             text_color="#222"
             )
             label.pack(pady=40)
-            
-if __name__ == "__main__":
-    app = MainWindow()
-    app.mainloop()
+            """
+            pass
