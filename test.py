@@ -1,26 +1,43 @@
-# A basic example of overlapping image and button
-import customtkinter
-from PIL import Image
-import pywinstyles
+import datetime
+from datetime import datetime, timedelta
 
-HEIGHT = 500
-WIDTH = 500
+date_labels = []
+day_labels = []
+current_date = datetime.today()
+def update_week():
+        today = datetime.today()
+        start_of_week = current_date - timedelta(days=current_date.weekday())
+        end_of_week = start_of_week + timedelta(days=6)
+        if start_of_week.month == end_of_week.month:
+            month_year = start_of_week.strftime('%B %Y')
+        else:
+            month_year = f"{start_of_week.strftime('%b')} - {end_of_week.strftime('%b %Y')}"
+        #header.configure(text=month_year)
 
-app = customtkinter.CTk()
-app.title("example")
-app.geometry((f"{WIDTH}x{HEIGHT}"))
-app.resizable(False, False)
-
-Label1 = customtkinter.CTkLabel(master=app, text="", image=customtkinter.CTkImage(Image.open('src/assets/fondo_light_mode.png'), size=(500,500)),
-                                width=500, height=500)
-Label1.place(x=0, y=0)
-
-Button1 = customtkinter.CTkButton(master=app, width=255, height=172, corner_radius=48,
-                                  text='BUTTON', bg_color="#000001") 
-Button1.place(x=120, y=57)
-
-#pywinstyles.set_opacity(Button1, color="#000001") # just add this line
-#pywinstyles.set_opacity(Button1, value=0.5, color="#000001") # color is not necessary in all cases
-pywinstyles.set_opacity(Button1, value=0.5, color="white")
-
-app.mainloop()
+        for i in range(7):
+            day = start_of_week + timedelta(days=i)
+            is_today = (day.date() == today.date())
+            is_current_week = (today >= start_of_week and today <= end_of_week)
+            # Default style
+            day_labels[i].configure(
+                text=day.strftime('%a'),
+                fg_color="transparent",
+                text_color="black"
+            )
+            date_labels[i].configure(
+                text=day.strftime('%d'),
+                fg_color="transparent",
+                text_color="black"
+            )
+            # Highlight today if in current week
+            if is_today and is_current_week:
+                day_labels[i].configure(
+                    fg_color="#fd6868",
+                    text_color="black"
+                )
+                date_labels[i].configure(
+                    fg_color="#fd6868",
+                    text_color="black"
+                )
+                
+update_week()
