@@ -4,6 +4,7 @@ from tkinter import ttk
 from PIL import Image
 import subprocess
 import os
+from models.task_manager import crear_usuario
 
 #Configuración inicial
 ctk.set_appearance_mode("light")
@@ -83,7 +84,7 @@ def ventana_registro():
     #remember.grid(row=7, column=0, columnspan=2, pady=10, padx=50)
 
     #Botón de registrar
-    register_btn = ctk.CTkButton(form_frame, text="Crear cuenta")
+    register_btn = ctk.CTkButton(form_frame, text="Crear cuenta", command=lambda: crear_usuario(entry_user, entry_mail, entry_password))
     register_btn.configure(font=("Roboto", 14, "bold"), fg_color="#F6DC00", hover_color="#0033FF", text_color="#2F2F77", corner_radius=8, cursor="hand2")
     register_btn.bind("<Button-1>", lambda e: register_btn.configure(fg_color="#0033FF", text_color="white"))
     register_btn.grid(row=7, column=0, columnspan=2, pady=10, padx=100, sticky="ew")
@@ -112,7 +113,9 @@ def ventana_registro():
     link_login.bind("<Button-1>", lambda e: link_login.configure(text_color="#6C0000"))
     link_login.bind("<Button-1>", lambda e: abrir_login())
     link_login.grid(row=12, column=1, pady=(10, 0), padx=(0, 160))
-
+    
+    #crear_usuario(entry_user, entry_mail, entry_password)
+    
     registro.mainloop()
     
-ventana_registro()
+#ventana_registro()

@@ -1,5 +1,5 @@
 import pyodbc
-from views.messageboxes import showinfo, showerror,showwarning
+from views.messageboxes import showinfo, showerror
 
 # Configuración de la conexión
 def get_connection():
@@ -91,6 +91,29 @@ def primeras_info_materias():
             "Profesor": row[4]
         })
     return lista
+
+# Agregar nuevo usuario a la base de datos
+def crear_usuario(entry_user, entry_email, entry_password):
+    nombre = entry_user.get()
+    email = entry_email.get()
+    password = entry_password.get()
+
+    # Validar campos obligatorios
+    if not nombre or not email or not password:
+        showerror("Error", "Todos los campos son obligatorios.")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+                INSERT INTO Usuarios (Nombre, CorreoElectronico, Contraseña)
+                VALUES (?, ?, ?)
+            """, (nombre, email, password))
+        conn.commit()
+        showinfo("Éxito", "Usuario registrado correctamente.")
+    except Exception as e:
+        showerror("Error", f"No se pudo registrar el usuario.\n{e}")
+    conn.close()
 
 # Obtener todas las materias
 def obtener_materias():
