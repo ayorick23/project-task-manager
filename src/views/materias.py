@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from models.task_manager import primeras_info_materias
 from PIL import Image
-from controllers.modificar_materias import ModificarMateriaFrame
+from controllers.modificar_materias import ModificarMateriaVentana
 
 class MateriasView(ctk.CTkFrame):
     def __init__(self, parent, select_option_callback, *args, **kwargs):
@@ -10,7 +10,7 @@ class MateriasView(ctk.CTkFrame):
         self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.content_frame.pack(fill="both", expand=True)
         self._build_ui()
-
+    
     def _build_ui(self):
 
         materias_titulo = ctk.CTkLabel(
@@ -45,6 +45,7 @@ class MateriasView(ctk.CTkFrame):
         materias = materias_db
 
         for i, materia in enumerate(materias):
+            materia_id = i + 1
             nombre = materia.get("Materia", "Materia")
             profesor = materia.get("Profesor", "Profesor")
             seccion = materia.get("Seccion", "Sección")
@@ -111,12 +112,12 @@ class MateriasView(ctk.CTkFrame):
             ciclo_label.grid(row=3, column=1, sticky="we", padx=15, pady=(0, 20))
 
             # Bind events para hacer clickeable toda la tarjeta
-            btn_frame.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            icon_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            nombre_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            profesor_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            seccion_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            ciclo_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
+            btn_frame.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            icon_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            nombre_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            profesor_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            seccion_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            ciclo_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
 
             # Posicionar en grid (3 columnas)
             row = i // 3
@@ -126,6 +127,9 @@ class MateriasView(ctk.CTkFrame):
         # Configurar las columnas para que se expandan uniformemente
         for col in range(3):
             materias_frame.grid_columnconfigure(col, weight=1)
-
+    
+        # Mostrar la ventana ModificarMateriaVentana al hacer clic en una materia
     def materia_callback(self, idx):
-        self.select_option(1)
+        materia_id = idx
+        ventana_modificar = ModificarMateriaVentana(self, materia_id)
+        ventana_modificar.grab_set()

@@ -2,6 +2,7 @@ import datetime
 import customtkinter as ctk
 from models.task_manager import primeras_info_materias
 from PIL import Image
+from controllers.modificar_materias import ModificarMateriaVentana
 
 class InicioView(ctk.CTkFrame):
     def __init__(self, parent, select_option_callback, *args, **kwargs):
@@ -60,6 +61,7 @@ class InicioView(ctk.CTkFrame):
         materias = materias_db[:6]
 
         for i, materia in enumerate(materias):
+            materia_id = i + 1
             nombre = materia.get("Materia", "Materia")
             profesor = materia.get("Profesor", "Profesor")
             seccion = materia.get("Seccion", "Sección")
@@ -112,12 +114,12 @@ class InicioView(ctk.CTkFrame):
             )
             ciclo_label.grid(row=3, column=1, sticky="we", padx=15, pady=(0, 20))
 
-            btn_frame.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            icon_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            nombre_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            profesor_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            seccion_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
-            ciclo_label.bind("<Button-1>", lambda e, idx=i: self.materia_callback(idx))
+            btn_frame.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            icon_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            nombre_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            profesor_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            seccion_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
+            ciclo_label.bind("<Button-1>", lambda e, idx=materia_id: self.materia_callback(idx))
 
             row = i // 3
             col = i % 3
@@ -125,4 +127,6 @@ class InicioView(ctk.CTkFrame):
             materias_frame.grid_columnconfigure(col, weight=1)
 
     def materia_callback(self, idx):
-        self.select_option(1)
+        materia_id = idx
+        ventana_modificar = ModificarMateriaVentana(self, materia_id)
+        ventana_modificar.grab_set()

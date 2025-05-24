@@ -145,7 +145,7 @@ class MainWindow(ctk.CTk):
         
         #horario_widget = ScheduleWidget(self.right_frame)
         #horario_widget.pack(pady=20, padx=20, fill="x")
-
+        
     def select_option(self, index):
         # Cambia el color del botón seleccionado
         for i, btn in enumerate(self.menu_buttons):

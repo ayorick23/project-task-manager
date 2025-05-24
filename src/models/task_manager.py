@@ -36,47 +36,32 @@ def obtener_info_materias():
             "UnidadesValorativas": materia[4]
         })
     return lista_materias
-
+    
 def modificar_materia(materiaID, profesor, seccion, horario):
-        conn = get_connection()
-        cursor = conn.cursor()
+    conn = get_connection()
+    cursor = conn.cursor()
 
-        materiaID = materiaID
-        profesor = profesor
-        seccion = seccion
-        horario = horario
-        try:
-            cursor.execute(
-                "INSERT INTO Profesores (Nombre) VALUES (?)",
-                (profesor)
-            )
-            #cursor.execute(
-            #    "UPDATE Materias SET ProfesorID=? WHERE MateriaID=?",
-            #    (profesor, materiaID)
-            #)
-            cursor.execute(
-                "UPDATE Materias SET Seccion=?, Horario=? WHERE MateriaID=?",
-                (seccion, horario, materiaID)
-
-            )
-            conn.commit()
-            return showinfo("Éxito", "Información actualizada correctamente.")
-        except Exception as e:
-            return showerror("Error", f"Error al actualizar la información: {e}")
+    materiaID = materiaID
+    profesor = profesor
+    seccion = seccion
+    horario = horario
+    
+    try:
+        cursor.execute(
+            "UPDATE Materias SET NombreProfesor=?, Seccion=?, Horario=? WHERE MateriaID=?",
+            (profesor, seccion, horario, materiaID)
+        )
+        conn.commit()
+        return showinfo("Éxito", "Información actualizada correctamente.")
+    except Exception as e:
+        return showerror("Error", f"Error al actualizar la información: {e}")
 
 def primeras_info_materias():
     conn = get_connection()
     cursor = conn.cursor()
     query = """
-        SELECT 
-            m.Nombre AS Materia,
-            m.Seccion,
-            m.Ciclo,
-            m.Icono,
-            p.Nombre AS Profesor
-        FROM Materias m
-        LEFT JOIN Profesores p ON m.ProfesorID = p.ProfesorID
-        ORDER BY m.MateriaID
+        SELECT Nombre, Seccion, Ciclo, Icono, NombreProfesor
+        FROM Materias 
     """
     cursor.execute(query)
     resultados = cursor.fetchall()
